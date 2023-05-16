@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:unipay/screens/deposit.dart';
 import 'package:unipay/screens/sendmoney.dart';
 
+import '../controllers/Student_Controller.dart';
 import '../screens/send.dart';
 import '../screens/transfer.dart';
 
@@ -12,8 +14,7 @@ class DisplayCards extends StatefulWidget {
 }
 
 class _DisplayCardsState extends State<DisplayCards> {
-  String balance = "";
-
+  final StudentController studentController = Get.find<StudentController>();
   // @override
   // void initState() {
   //   super.initState();
@@ -56,7 +57,7 @@ class _DisplayCardsState extends State<DisplayCards> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Rs. ${balance.toString()}',
+                        'Rs. ${studentController.student.value.balance.toString()}',
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,

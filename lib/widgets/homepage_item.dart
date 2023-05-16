@@ -6,16 +6,23 @@ import 'package:unipay/screens/payments.dart';
 import 'package:unipay/screens/scholarship.dart';
 import 'package:unipay/screens/send.dart';
 
+import '../controllers/Student_Controller.dart';
 import '../screens/paymentoptions.dart';
 import 'date_total.dart';
 import 'display_cards.dart';
 import 'transaction_item.dart';
 
-class HomePageItem extends StatelessWidget {
+class HomePageItem extends StatefulWidget {
   const HomePageItem({
     Key? key,
   }) : super(key: key);
 
+  @override
+  _HomePageItemState createState() => _HomePageItemState();
+}
+
+class _HomePageItemState extends State<HomePageItem> {
+  final studentController = Get.find<StudentController>();
   @override
   Widget build(BuildContext context) {
     Widget _icon(IconData icon, String text, Widget route) {

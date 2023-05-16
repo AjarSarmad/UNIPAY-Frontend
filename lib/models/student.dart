@@ -1,4 +1,5 @@
 class Student {
+  // ignore: non_constant_identifier_names
   String nu_id = "";
   String firstName = "";
   String lastName = "";
@@ -16,8 +17,8 @@ class Student {
     return nu_id;
   }
 
-  void setNu_id(String nu_id) {
-    this.nu_id = nu_id;
+  void setNu_id(String nuId) {
+    nu_id = nuId;
   }
 
   String getFirstName() {

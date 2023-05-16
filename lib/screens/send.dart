@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 import 'package:unipay/screens/sendmoney.dart';
 import 'package:unipay/screens/transfer.dart';
 
+import '../controllers/Student_Controller.dart';
+import '../controllers/dbhelper.dart';
 import '../widgets/numpad.dart';
 
 class SendMoney extends StatefulWidget {
@@ -15,6 +18,9 @@ class SendMoney extends StatefulWidget {
 class _SendMoneyState extends State<SendMoney> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _myController = TextEditingController();
+  dbhelper db = new dbhelper();
+  final StudentController studentController = Get.find<StudentController>();
+  @override
   @override
   void initState() {
     super.initState();
@@ -44,7 +50,7 @@ class _SendMoneyState extends State<SendMoney> {
                     alignment: Alignment.center,
                     child: RichText(
                       textAlign: TextAlign.center,
-                      text: const TextSpan(children: [
+                      text: TextSpan(children: [
                         TextSpan(
                           text: 'Current Balance',
                           style: TextStyle(
@@ -53,7 +59,8 @@ class _SendMoneyState extends State<SendMoney> {
                           ),
                         ),
                         TextSpan(
-                          text: '\nRs. 1000',
+                          text:
+                              'Rs. ${studentController.student.value.balance.toString()}',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,

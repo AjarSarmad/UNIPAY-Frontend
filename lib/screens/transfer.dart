@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 import 'package:unipay/screens/InvoicePage.dart';
 
+import '../controllers/Student_Controller.dart';
+import '../controllers/dbhelper.dart';
 import 'home.dart';
 
 class MoneyTransferPage extends StatefulWidget {
@@ -18,6 +23,8 @@ class _MoneyTransferPageState extends State<MoneyTransferPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController idController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
+  dbhelper db = new dbhelper();
+  final StudentController studentController = Get.find<StudentController>();
   String _id = '';
   String _note = '';
 
@@ -204,16 +211,22 @@ class _MoneyTransferPageState extends State<MoneyTransferPage> {
                 ),
                 const SizedBox(height: 40),
                 TextButton(
-                  onPressed: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => InvoicePage(
-                              name: "Ahmed",
-                              amount: widget.amount,
-                              acc: '1234',
-                              receiver: _id,
-                              note: _note,
-                              dateTime: DateTime.now()))),
+                  onPressed: () async {
+                    var res = await db.sendMoney(
+                        widget.amount.substring(4), _id, _note);
+                    if (res.statusCode == 200) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => InvoicePage(
+                                  name: json.decode(res.body)['recieverName'],
+                                  amount: widget.amount,
+                                  acc: json.decode(res.body)['recieverAccount'],
+                                  receiver: json.decode(res.body)['recieverId'],
+                                  note: json.decode(res.body)['note'],
+                                  dateTime: json.decode(res.body)['date'])));
+                    }
+                  },
                   style: TextButton.styleFrom(
                       minimumSize: const Size(200, 50),
                       primary: Colors.white,
@@ -304,7 +317,7 @@ class InvoicePage extends StatelessWidget {
   final String amount;
   final String receiver;
   final String note;
-  final DateTime dateTime;
+  final String dateTime;
 
   const InvoicePage({
     Key? key,
@@ -384,7 +397,8 @@ class InvoicePage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          DateFormat('MMM d, yyyy').format(dateTime),
+                          //DateFormat('MMM d, yyyy').format(dateTime),
+                          dateTime,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,

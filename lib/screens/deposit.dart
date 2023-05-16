@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:unipay/controllers/dbhelper.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 
+import '../controllers/Student_Controller.dart';
 import '../widgets/container_with_heading.dart';
 
-class Deposit extends StatelessWidget {
-  const Deposit({super.key});
+class Deposit extends StatefulWidget {
+  const Deposit({Key? key}) : super(key: key);
 
+  @override
+  _DepositState createState() => _DepositState();
+}
+
+class _DepositState extends State<Deposit> {
+  dbhelper db = new dbhelper();
+  final StudentController studentController = Get.find<StudentController>();
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -82,9 +92,14 @@ class Deposit extends StatelessWidget {
             const SizedBox(height: 40),
             Center(
               child: TextButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    _showConfimrationDialog(context, _amountController.text);
+                    var res = await db.depositMoney(
+                        studentController.student.value.nu_id.toString(),
+                        _amountController.text.trim().toString());
+                    if (res.statusCode == 200) {
+                      _showConfimrationDialog(context, _amountController.text);
+                    }
                   }
                 },
                 style: TextButton.styleFrom(

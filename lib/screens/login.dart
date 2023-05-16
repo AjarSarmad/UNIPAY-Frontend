@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:get/get.dart';
 import 'package:unipay/controllers/dbhelper.dart';
 import 'package:flutter/material.dart';
 import 'package:unipay/screens/Admin/admin_login.dart';
 import 'package:unipay/screens/signup.dart';
 import 'package:http/http.dart' as http;
+import '../controllers/Student_Controller.dart';
 import 'forget_password.dart';
 import 'otp.dart';
 
@@ -15,6 +17,8 @@ class SignInScreen extends StatelessWidget {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final emailcontroller = TextEditingController();
   final passcontroller = TextEditingController();
+  // final studentController = Get.put(StudentController());
+
   // late final emailController = TextEditingController();
   // late final passwordController = TextEditingController();
   @override
@@ -128,7 +132,7 @@ class SignInScreen extends StatelessWidget {
                     height: 20,
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Future s = db.AccountVerification(
                           emailcontroller.text.trim(),
                           passcontroller.text.trim());

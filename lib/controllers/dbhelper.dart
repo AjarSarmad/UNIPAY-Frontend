@@ -1,14 +1,22 @@
 import 'dart:convert';
+// import 'dart:ffi';
 import 'dart:io';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:unipay/models/student.dart';
+
+import 'Student_Controller.dart';
 
 class dbhelper {
   static const String url = 'http://192.168.18.11:80/api';
   static late String email;
   late String name;
   static late String balance;
+  final StudentController studentController = Get.put(StudentController());
+  // final StudentController studentController1 = Get.find<StudentController>();
+  // late final student1 = studentController1.student;
 
+  // late Student student;
   String getName() {
     return name;
   }
@@ -36,21 +44,75 @@ class dbhelper {
       body: body,
     );
     if (response.statusCode == 200) {
-      email = emailController;
-      Future s =
-          getStudentbyId(json.decode(response.body)['loginId'].toString());
+      var res = await studentController
+          .getStudentbyId(json.decode(response.body)['loginId'].toString());
 
-      s.then((value) => {
-            if (value.statusCode == 200)
-              {
-                name = json.decode(value.body)['firstName'] +
-                    " " +
-                    json.decode(value.body)['lastName'],
-                balance = json.decode(value.body)['balance']
-              }
-          });
+      //email = emailController;
+      //Future s =
+      //getStudentbyId(json.decode(response.body)['loginId'].toString());
+
+      // s.then((value) => {
+      //       if (value.statusCode == 200)
+      //         {
+      // student.setAccountNo(json.decode(value.body)['accountNo']),
+      // student.setBalance(json.decode(value.body)['balance']),
+      // student.setContact(json.decode(value.body)['contact']),
+      // student.setEmail(json.decode(value.body)['email']),
+      // student.setFirstName(json.decode(value.body)['firstName']),
+      // student.setLastName(json.decode(value.body)['lastName']),
+      // student.setGuardianContact(
+      //     json.decode(value.body)['guardianContact']),
+      // student.setGuardianFullName(
+      //     json.decode(value.body)['guardianFullName']),
+      // student.setAddress(json.decode(value.body)['address']),
+      // student.setNu_id(json.decode(value.body)['nu_id']),
+      // studentController.setStudent(student),
+      // Get.lazyPut<StudentController>(() => StudentController())
+
+      // name = json.decode(value.body)['firstName'] +
+      //     " " +
+      //     json.decode(value.body)['lastName'],
+      // balance = json.decode(value.body)['balance']
+      // }
+      // }
+      // )
+      ;
+      return response;
     }
     print("${response.statusCode}");
+    return response;
+  }
+
+  Future<http.Response> depositMoney(String id, String amount) async {
+    var response = await http.post(
+      Uri.parse("${url}/Transactions/depositMoney?id=$id&amount=$amount"),
+    );
+    print("${response.statusCode}");
+    return response;
+  }
+
+  Future<http.Response> sendMoney(
+      String amount, String receiverId, String note) async {
+    String senderId = studentController.student.value.nu_id.toString();
+    Map data = {
+      'amount': '$amount',
+      'senderId': '$senderId',
+      'recieverId': '$receiverId',
+      'note': '$note',
+      'type': 'debit'
+    };
+    //encode Map to JSON
+    var body = json.encode(data);
+    var response = await http.post(
+      Uri.parse("${url}/Transactions/sendMoney"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: body,
+    );
+
+    print("${response.statusCode}");
+    //print(body);
     return response;
   }
 
