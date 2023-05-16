@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unipay/screens/payments.dart';
 import 'package:unipay/screens/profile.dart';
-import 'package:unipay/screens/scholarship.dart';
-//import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../widgets/homepage_item.dart';
 

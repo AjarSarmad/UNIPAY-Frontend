@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:unipay/screens/application.dart';
@@ -87,45 +89,54 @@ class Scard extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.fromLTRB(20.0, 6.0, 0.0, 0.0),
+              margin: EdgeInsets.fromLTRB(10.0, 6.0, 0.0, 0.0),
               height: 200,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.fromRGBO(240, 240, 240, 1.0),
                 borderRadius:
                     BorderRadius.horizontal(left: Radius.circular(20)),
-              ),
-              //child: Padding(
-              // padding: EdgeInsets.fromLTRB(100.0, 5.0, 10.0, 5.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.w700),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                      ),
-                    ],
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                    spreadRadius: 0,
                   ),
-                  SizedBox(height: 6.0),
-                  Text(
-                    desc,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 4,
-                  )
                 ],
+              ),
+              child: Container(
+                margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 6.0),
+                    Text(
+                      desc,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 4,
+                    )
+                  ],
+                ),
               ),
             ),
             // ),

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 
-import 'home.dart';
-
 class Paymentopt extends StatelessWidget {
   const Paymentopt({Key? key}) : super(key: key);
 

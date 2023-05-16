@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:unipay/screens/payments.dart';
 
 import '../component/balance_card.dart';
-import 'transfer.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);

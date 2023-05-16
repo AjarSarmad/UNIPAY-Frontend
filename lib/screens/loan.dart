@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:unipay/screens/HomeScreen.dart';
-
-import 'home.dart';
 
 class Loan extends StatelessWidget {
   Loan({Key? key}) : super(key: key);

@@ -1,88 +1,39 @@
-class Transaction {
-  final int id;
-  final String to;
+import 'package:flutter/material.dart';
+
+class Transaction extends StatelessWidget {
+  final String acc;
+  final String name;
+  final String rec;
+  final String rec_acc;
   final String amount;
   final String date;
-  final String description;
+  final String note;
 
   Transaction(
-    this.id,
-    this.to,
+    this.name,
+    this.acc,
+    this.rec,
+    this.rec_acc,
     this.amount,
     this.date,
-    this.description,
+    this.note,
   );
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
 }
 
-final List<Transaction> transactions = [
-  Transaction(
-    1,
-    'Shopee',
-    '350.000',
-    '30 Juli 2022 12:13',
-    'Pulsa',
-  ),
-  Transaction(
-    2,
-    'Traveloka',
-    '950.000',
-    '12 Juli 2022 12:13',
-    'Hotel',
-  ),
-  Transaction(
-    3,
-    'Tokopedia',
-    '440.000',
-    '13 Juli 2022 12:13',
-    'Kereta',
-  ),
-  Transaction(
-    4,
-    'Blibli',
-    '4.500.000',
-    '10 Juli 2022 12:13',
-    'LCD',
-  ),
-  Transaction(
-    5,
-    'Lazada',
-    '2.000.000',
-    '20 Juli 2022 12:13',
-    'Mouse',
-  ),
-  Transaction(
-    6,
-    'Flip',
-    '3.000.000',
-    '23 Juli 2022 12:13',
-    'Transfer',
-  ),
-  Transaction(
-    7,
-    'Tiket.com',
-    '750.000',
-    '4 Juli 2022 12:13',
-    'Pesawat',
-  ),
-  Transaction(
-    8,
-    'Traveloka',
-    '950.000',
-    '12 Juli 2022 12:13',
-    'Pesawat',
-  ),
-  Transaction(
-    9,
-    'Pegipegi',
-    '860.000',
-    '18 Juli 2022 12:13',
-    'Hotel',
-  ),
-  Transaction(
-    10,
-    'Flip',
-    '250.000',
-    '26 Juli 2022 12:13',
-    'transfer',
-  ),
+final List<Transaction> credittransactions = [
+  Transaction("Ahmed", "1234", "Ajar", "3456", "550", "30 July", "Hi"),
+  Transaction("Hassan", "1234", "Ajar", "3456", "1000", "30 July", "Hi"),
+  Transaction("Ajar", "1234", "Hassan", "3456", "55000", "30 July", "Hi"),
+  Transaction("Hamza", "1234", "Ajar", "3456", "450", "30 July", "Hi"),
+];
+final List<Transaction> debittransactions = [
+  Transaction("debit", "1234", "Ajar", "3456", "550", "30 July", "Hi"),
+  Transaction("test", "1234", "Ajar", "3456", "1000", "30 July", "Hi"),
+  Transaction("random", "1234", "Hassan", "3456", "55000", "30 July", "Hi"),
 ];
