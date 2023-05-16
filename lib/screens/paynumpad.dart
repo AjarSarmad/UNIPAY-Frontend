@@ -1,15 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 import 'package:unipay/screens/InvoicePage.dart';
 import 'package:unipay/screens/sendmoney.dart';
 import 'package:unipay/screens/transfer.dart';
 
+import '../controllers/Student_Controller.dart';
+import '../controllers/dbhelper.dart';
 import '../widgets/numpad.dart';
 
 class Paynum extends StatefulWidget {
-  const Paynum({key}) : super(key: key);
+  final int receiverId;
+  const Paynum({key, required this.receiverId}) : super(key: key);
 
   @override
   State<Paynum> createState() => _PaynumState();
@@ -19,6 +25,9 @@ class _PaynumState extends State<Paynum> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final TextEditingController _myController = TextEditingController();
   final TextEditingController _itemController = TextEditingController();
+
+  dbhelper db = new dbhelper();
+  final StudentController studentController = Get.find<StudentController>();
 
   @override
   void initState() {
@@ -115,18 +124,39 @@ class _PaynumState extends State<Paynum> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       //if (_key.currentState!.validate()) {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InvoicePage(
-                                    name: "Ahmed",
-                                    acc: '1234',
-                                    amount: _myController.text,
-                                    items: _itemController.text,
-                                    dateTime: DateTime.now(),
-                                  )));
+                      var res = await db.payments(
+                          _myController.text.trim().toString().substring(4),
+                          widget.receiverId.toString(),
+                          _itemController.text.trim().toString());
+                      if (res.statusCode == 200) {
+                        String temp = (int.parse(
+                                    studentController.student.value.balance) -
+                                int.parse(_myController.text
+                                    .trim()
+                                    .toString()
+                                    .substring(4)))
+                            .toString();
+                        studentController.student.value.setBalance(temp);
+                        _showConfimrationDialog(context);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => InvoicePage(
+                                      name:
+                                          jsonDecode(res.body)['recieverName'],
+                                      acc: jsonDecode(
+                                          res.body)['recieverAccount'],
+                                      amount: _myController.text,
+                                      items: _itemController.text,
+                                      dateTime: jsonDecode(res.body)['date'] +
+                                          jsonDecode(res.body)['time'],
+                                    )));
+                      } else {
+                        _ErrorConfimrationDialog(context);
+                      }
+
                       //  }
                     },
                     //=> _showConfimrationDialog(context),
@@ -207,12 +237,73 @@ _showConfimrationDialog(BuildContext context) {
   );
 }
 
+_ErrorConfimrationDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      insetPadding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: SizedBox(
+        height: 430,
+        width: 327,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
+              SizedBox(
+                width: 200,
+                height: 180,
+                child: FittedBox(
+                  child: Icon(
+                    Icons.close_rounded,
+                    color: Colors.red,
+                  ),
+
+                  //Image.asset('assets/red.png'),
+                  //SvgPicture.asset('assets/images/sent_illustration.svg'),
+                  fit: BoxFit.fill,
+                ),
+              ),
+              const SizedBox(height: 35),
+              Text(
+                "Transaction has been failed!",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40),
+              TextButton(
+                onPressed: () => Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen())),
+                style: TextButton.styleFrom(
+                    minimumSize: const Size(200, 50),
+                    primary: Colors.white,
+                    backgroundColor: Color(0xFFD44C66),
+                    shape: const BeveledRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(7)))),
+                child: Text("Try Again"),
+              )
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 class InvoicePage extends StatelessWidget {
   final String name;
   final String amount;
   final String items;
   final String acc;
-  final DateTime dateTime;
+  final String dateTime;
 
   const InvoicePage({
     Key? key,
@@ -289,7 +380,7 @@ class InvoicePage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          DateFormat('MMM d, yyyy').format(dateTime),
+                          dateTime,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,

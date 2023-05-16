@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'package:http/http.dart' as http;
 import 'dart:ui';
 
 import 'package:file_picker/file_picker.dart';

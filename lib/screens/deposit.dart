@@ -98,6 +98,13 @@ class _DepositState extends State<Deposit> {
                         studentController.student.value.nu_id.toString(),
                         _amountController.text.trim().toString());
                     if (res.statusCode == 200) {
+                      String temp = (int.parse(studentController
+                                  .student.value.balance
+                                  .toString()) +
+                              int.parse(
+                                  _amountController.text.trim().toString()))
+                          .toString();
+                      studentController.student.value.setBalance(temp);
                       _showConfimrationDialog(context, _amountController.text);
                     }
                   }

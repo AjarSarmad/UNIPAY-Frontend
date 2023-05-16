@@ -9,6 +9,7 @@ import 'package:unipay/screens/InvoicePage.dart';
 
 import '../controllers/Student_Controller.dart';
 import '../controllers/dbhelper.dart';
+import '../models/Invoice.dart';
 import 'home.dart';
 
 class MoneyTransferPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class MoneyTransferPage extends StatefulWidget {
 }
 
 class _MoneyTransferPageState extends State<MoneyTransferPage> {
+  final invoice obj = new invoice();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController idController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
@@ -139,10 +141,28 @@ class _MoneyTransferPageState extends State<MoneyTransferPage> {
         ),
         child: Center(
           child: InkWell(
-            onTap: () {
-              // if (_formKey.currentState!.validate()) {
-              _showConfimrationDialog(context);
-              // }
+            onTap: () async {
+              var res =
+                  await db.sendMoney(widget.amount.substring(4), _id, _note);
+              if (res.statusCode == 200) {
+                String temp = (int.parse(studentController.student.value.balance
+                            .toString()) -
+                        int.parse(widget.amount.substring(4)))
+                    .toString();
+                studentController.student.value.setBalance(temp);
+                obj.setreceiver(json.decode(res.body)['recieverId']);
+                obj.setamount(widget.amount.toString());
+                obj.setaccount(json.decode(res.body)['recieverAccount']);
+                obj.setname(json.decode(res.body)['recieverName']);
+                obj.setnote(json.decode(res.body)['note']);
+                obj.setdate(json.decode(res.body)['date']);
+
+                if (_formKey.currentState!.validate()) {
+                  _showConfimrationDialog(context);
+                }
+              } else {
+                _ErrorConfimrationDialog(context);
+              }
             },
             child: Container(
               height: 49,
@@ -211,21 +231,17 @@ class _MoneyTransferPageState extends State<MoneyTransferPage> {
                 ),
                 const SizedBox(height: 40),
                 TextButton(
-                  onPressed: () async {
-                    var res = await db.sendMoney(
-                        widget.amount.substring(4), _id, _note);
-                    if (res.statusCode == 200) {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InvoicePage(
-                                  name: json.decode(res.body)['recieverName'],
-                                  amount: widget.amount,
-                                  acc: json.decode(res.body)['recieverAccount'],
-                                  receiver: json.decode(res.body)['recieverId'],
-                                  note: json.decode(res.body)['note'],
-                                  dateTime: json.decode(res.body)['date'])));
-                    }
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => InvoicePage(
+                                name: obj.getname(),
+                                amount: widget.amount,
+                                acc: obj.getaccount(),
+                                receiver: obj.getreceiver(),
+                                note: obj.getnote(),
+                                dateTime: obj.getdate())));
                   },
                   style: TextButton.styleFrom(
                       minimumSize: const Size(200, 50),

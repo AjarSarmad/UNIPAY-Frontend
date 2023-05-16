@@ -29,14 +29,19 @@ class Payments extends StatelessWidget {
           crossAxisSpacing: 20,
           padding: EdgeInsets.all(20),
           children: [
-            _buildButton(context, 'Cafe', Icons.local_cafe, Paynum()),
+            _buildButton(
+                context, 'Cafe', Icons.local_cafe, Paynum(receiverId: 1)),
             _buildButton(context, 'Uni Fees', Icons.school, Unifees()),
             _buildButton(context, 'Point Fees', Icons.account_balance_wallet,
                 Pointfees()),
-            _buildButton(context, 'Stationary Shop', Icons.book, Paynum()),
-            _buildButton(context, 'Pizza Fast', Icons.local_pizza, Paynum()),
-            _buildButton(context, 'Shawarma Shop', Icons.fastfood, Paynum()),
-            _buildButton(context, 'Dhaaba', Icons.local_dining, Paynum()),
+            _buildButton(
+                context, 'Stationary Shop', Icons.book, Paynum(receiverId: 2)),
+            _buildButton(context, 'Pizza Fast', Icons.local_pizza,
+                Paynum(receiverId: 3)),
+            _buildButton(context, 'Shawarma Shop', Icons.fastfood,
+                Paynum(receiverId: 7)),
+            _buildButton(
+                context, 'Dhaaba', Icons.local_dining, Paynum(receiverId: 6)),
           ],
         ),
       ),

@@ -91,6 +91,53 @@ class dbhelper {
     return response;
   }
 
+  Future<http.Response> payments(
+      String amount, String receiverId, String note) async {
+    String senderId = studentController.student.value.nu_id.toString();
+    late String type;
+    switch (receiverId) {
+      case "1":
+        type = "CAFE";
+        break;
+      case "2":
+        type = "STATIONARY SHOP";
+        break;
+      case "3":
+        type = "PIZZA FAST";
+        break;
+      case "4":
+        type = "JADOON TRANSPORT";
+        // note = "Transport Fee "
+        break;
+      case "5":
+        type = "SEMESTER FEES NUCES KHI";
+        break;
+      case "6":
+        type = "DHAABA";
+        break;
+    }
+    Map data = {
+      'amount': '$amount',
+      'senderId': '$senderId',
+      'recieverId': '$receiverId',
+      'note': '$note',
+      'type': '$type'
+    };
+    //encode Map to JSON
+    var body = json.encode(data);
+    var response = await http.post(
+      Uri.parse("${url}/Transactions/payments"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: body,
+    );
+
+    print("${response.statusCode}");
+    //print(body);
+    return response;
+  }
+
   Future<http.Response> sendMoney(
       String amount, String receiverId, String note) async {
     String senderId = studentController.student.value.nu_id.toString();
