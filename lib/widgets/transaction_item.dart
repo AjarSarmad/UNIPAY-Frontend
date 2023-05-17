@@ -37,7 +37,7 @@ class TransactionItem extends StatelessWidget {
                 height: 35,
                 child: Center(
                   child: Text(
-                    transaction.name
+                    transaction.senderName
                         .split(" ")
                         .map((e) => e.substring(0, 1))
                         .toList()
@@ -61,7 +61,7 @@ class TransactionItem extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Text(
-                      transaction.name,
+                      transaction.senderName,
                       style: const TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -83,7 +83,7 @@ class TransactionItem extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
-                    "- Rs. ${transaction.amount}",
+                    " Rs. ${transaction.amount}",
                     style: const TextStyle(
                       fontSize: 15,
                       color: Color(0xFFFA6D6D),

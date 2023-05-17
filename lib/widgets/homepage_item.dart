@@ -1,6 +1,8 @@
 //import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 //import 'package:get/get.dart';
 import 'package:unipay/screens/credit.dart';
 //import 'package:unipay/models/transaction.dart';
@@ -10,6 +12,7 @@ import 'package:unipay/screens/scholarship.dart';
 import 'package:unipay/screens/send.dart';
 import 'package:unipay/widgets/transaction_item.dart';
 
+import '../controllers/Transaction_Controller.dart';
 import '../models/transaction.dart';
 import '../screens/debit.dart';
 import '../screens/paymentoptions.dart';
@@ -29,6 +32,8 @@ class HomePageItem extends StatefulWidget {
 class _HomePageItem extends State<HomePageItem>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final TransactionController transactionController =
+      Get.find<TransactionController>();
 
   @override
   void initState() {
@@ -129,44 +134,76 @@ class _HomePageItem extends State<HomePageItem>
                   Container(
                     padding: EdgeInsets.all(16),
                     child: ListView.builder(
-                      itemCount:
-                          credittransactions.length, // number of transactions
-                      itemBuilder: (ctx, index) {
+                      itemCount: transactionController
+                          .creditTransactions.length, // number of transactions
+                      itemBuilder: (context, index) {
                         return TransactionItem(
-                            onpressed: CreditInvoicePage(
-                              acc: credittransactions[index].acc.toString(),
-                              amount: credittransactions[index].amount,
-                              name: credittransactions[index].name,
-                              receiver: credittransactions[index].rec,
-                              rec_acc: credittransactions[index].rec_acc,
-                              note: credittransactions[index].note,
-                              dateTime: credittransactions[index].date,
+                            onpressed: DebitInvoicePage(
+                              id: transactionController
+                                  .creditTransactions[index].id
+                                  .toString(),
+                              acc: transactionController
+                                  .creditTransactions[index].senderAccount
+                                  .toString(),
+                              amount: transactionController
+                                  .creditTransactions[index].amount
+                                  .toString(),
+                              name: transactionController
+                                  .creditTransactions[index].senderName
+                                  .toString(),
+                              receiver: transactionController
+                                  .creditTransactions[index].recieverName
+                                  .toString(),
+                              rec_acc: transactionController
+                                  .creditTransactions[index].recieverAccount
+                                  .toString(),
+                              note: transactionController
+                                  .creditTransactions[index].note
+                                  .toString(),
+                              dateTime: transactionController
+                                  .creditTransactions[index].date
+                                  .toString(),
                             ),
-                            transaction: credittransactions[index]
-
-                            //Transaction(
-                            //  123, "Ahmed", "122", "4 may", "hi lol"),
-                            );
+                            transaction: transactionController
+                                .creditTransactions[index]);
                       },
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.all(16),
                     child: ListView.builder(
-                      itemCount:
-                          debittransactions.length, // number of transactions
-                      itemBuilder: (ctx, index) {
+                      itemCount: transactionController
+                          .debitTransactions.length, // number of transactions
+                      itemBuilder: (context, index) {
                         return TransactionItem(
-                            onpressed: DebitInvoicePage(
-                              acc: debittransactions[index].acc.toString(),
-                              amount: debittransactions[index].amount,
-                              name: debittransactions[index].name,
-                              receiver: debittransactions[index].rec,
-                              rec_acc: debittransactions[index].rec_acc,
-                              note: debittransactions[index].note,
-                              dateTime: debittransactions[index].date,
+                            onpressed: CreditInvoicePage(
+                              id: transactionController
+                                  .debitTransactions[index].id
+                                  .toString(),
+                              acc: transactionController
+                                  .debitTransactions[index].senderAccount
+                                  .toString(),
+                              amount: transactionController
+                                  .debitTransactions[index].amount
+                                  .toString(),
+                              name: transactionController
+                                  .debitTransactions[index].senderName
+                                  .toString(),
+                              receiver: transactionController
+                                  .debitTransactions[index].recieverName
+                                  .toString(),
+                              rec_acc: transactionController
+                                  .debitTransactions[index].recieverAccount
+                                  .toString(),
+                              note: transactionController
+                                  .debitTransactions[index].note
+                                  .toString(),
+                              dateTime: transactionController
+                                  .debitTransactions[index].date
+                                  .toString(),
                             ),
-                            transaction: debittransactions[index]);
+                            transaction:
+                                transactionController.debitTransactions[index]);
                       },
                     ),
                   )
@@ -184,47 +221,3 @@ class _HomePageItem extends State<HomePageItem>
     ]));
   }
 }
-// Widget _transectionList() {
-//   return Column(
-//     children: <Widget>[
-//       _transaction("Ahmed", "23 Dec 2022"),
-//       _transaction("Cafe", "25 Dec 2022"),
-//       _transaction("Uni Fees", "03 Sep 2022"),
-//     ],
-//   );
-// }
-
-// Widget _transaction(String text, String time) {
-//   return ListTile(
-//       leading: Container(
-//         height: 50,
-//         width: 50,
-//         decoration: BoxDecoration(
-//           //color: LightColor.navyBlue1,
-//           borderRadius: BorderRadius.all(Radius.circular(10)),
-//         ),
-//         child: Icon(Icons.hd, color: Colors.white),
-//       ),
-//       contentPadding: EdgeInsets.symmetric(),
-//       title: Text(
-//         "Ahmed Ali",
-//       ),
-//       subtitle: Text(time),
-//       trailing: Container(
-//         height: 30,
-//         width: 60,
-//         alignment: Alignment.center,
-//         decoration: BoxDecoration(
-//           //color: LightColor.lightGrey,
-//           borderRadius: BorderRadius.all(Radius.circular(10)),
-//         ),
-//         // child: Text(
-//         //   'Amount',
-//         //   style: GoogleFonts.mulish(
-//         //        fontSize: 12,
-//         //        fontWeight: FontWeight.bold,
-//         //        color: LightColor.navyBlue2))
-//         // )),
-//       ));
-// }
-  

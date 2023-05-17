@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:unipay/controllers/Student_Controller.dart';
+import 'package:unipay/controllers/dbhelper.dart';
 import 'package:unipay/screens/payments.dart';
 
+import '../controllers/Transaction_Controller.dart';
+import '../models/transaction.dart';
 import 'HomeScreen.dart';
 
 class Unifees extends StatefulWidget {
@@ -27,6 +34,10 @@ class _Unifees extends State<Unifees> {
 
   @override
   Widget build(BuildContext context) {
+    dbhelper db = new dbhelper();
+    final StudentController studentController = Get.find<StudentController>();
+    final TransactionController transactionController =
+        Get.find<TransactionController>();
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -129,7 +140,8 @@ class _Unifees extends State<Unifees> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               _calculateFees();
-                              _showConfimrationDialog(context, _totalFees);
+                              _showConfimrationDialog(context, _totalFees,
+                                  _creditHoursController.text.toString());
                             }
                           },
                         ),
@@ -144,7 +156,11 @@ class _Unifees extends State<Unifees> {
   }
 }
 
-_showConfimrationDialog(BuildContext context, int fee) {
+_showConfimrationDialog(BuildContext context, int fee, String creditHours) {
+  dbhelper db = new dbhelper();
+  final StudentController studentController = Get.find<StudentController>();
+  final TransactionController transactionController =
+      Get.find<TransactionController>();
   showDialog(
     context: context,
     builder: (context) => Dialog(
@@ -186,14 +202,47 @@ _showConfimrationDialog(BuildContext context, int fee) {
               ),
               const SizedBox(height: 40),
               TextButton(
-                onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => InvoicePage(
-                            name: "Ahmed",
-                            amount: fee,
-                            acc: '1234',
-                            dateTime: DateTime.now()))),
+                onPressed: () async {
+                  String note = "University Fee for $creditHours credit hours";
+                  var res = await db.payments(fee.toString(), '5', note);
+                  if (res.statusCode == 200) {
+                    String temp =
+                        (int.parse(studentController.student.value.balance) -
+                                fee)
+                            .toString();
+                    studentController.student.value.setBalance(temp);
+
+                    transactionController.debitTransactions.insert(
+                        0,
+                        Transaction(
+                            json.decode(res.body)['id'].toString(),
+                            json.decode(res.body)['amount'].toString(),
+                            json.decode(res.body)['senderName'],
+                            json.decode(res.body)['recieverName'],
+                            json.decode(res.body)['senderId'],
+                            json.decode(res.body)['recieverId'],
+                            json.decode(res.body)['senderAccount'],
+                            json.decode(res.body)['recieverAccount'],
+                            json.decode(res.body)['date'],
+                            json.decode(res.body)['time'],
+                            json.decode(res.body)['note'],
+                            json.decode(res.body)['type']));
+
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => InvoicePage(
+                                name: studentController.student.value.firstName
+                                        .toString() +
+                                    " " +
+                                    studentController.student.value.lastName
+                                        .toString(),
+                                amount: fee,
+                                acc: studentController.student.value.accountNo
+                                    .toString(),
+                                dateTime: DateTime.now())));
+                  }
+                },
                 style: TextButton.styleFrom(
                     minimumSize: const Size(200, 50),
                     primary: Colors.white,

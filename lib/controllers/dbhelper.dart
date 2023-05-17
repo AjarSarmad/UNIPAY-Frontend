@@ -6,20 +6,16 @@ import 'package:http/http.dart' as http;
 import 'package:unipay/models/student.dart';
 
 import 'Student_Controller.dart';
+import 'Transaction_Controller.dart';
 
 class dbhelper {
-  static const String url = 'http://192.168.18.67:80/api';
+  static const String url = 'http://192.168.18.11:80/api';
   static late String email;
   late String name;
   static late String balance;
   final StudentController studentController = Get.put(StudentController());
-  // final StudentController studentController1 = Get.find<StudentController>();
-  // late final student1 = studentController1.student;
-
-  // late Student student;
-  String getName() {
-    return name;
-  }
+  final TransactionController transactionController =
+      Get.put(TransactionController());
 
   Future<http.Response> getStudentbyId(String id) async {
     var response =
@@ -46,7 +42,11 @@ class dbhelper {
     if (response.statusCode == 200) {
       var res = await studentController
           .getStudentbyId(json.decode(response.body)['loginId'].toString());
+      var res1 = await transactionController.getCreditTransactions(
+          json.decode(response.body)['loginId'].toString());
 
+      var res2 = await transactionController.getDebitTransactions(
+          json.decode(response.body)['loginId'].toString());
       //email = emailController;
       //Future s =
       //getStudentbyId(json.decode(response.body)['loginId'].toString());
@@ -107,13 +107,15 @@ class dbhelper {
         break;
       case "4":
         type = "JADOON TRANSPORT";
-        // note = "Transport Fee "
         break;
       case "5":
         type = "SEMESTER FEES NUCES KHI";
         break;
       case "6":
         type = "DHAABA";
+        break;
+      case "7":
+        type = "SHAWARMA SHOP";
         break;
     }
     Map data = {

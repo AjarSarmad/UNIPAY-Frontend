@@ -4,6 +4,7 @@ import 'package:unipay/screens/deposit.dart';
 import 'package:unipay/screens/sendmoney.dart';
 
 import '../controllers/Student_Controller.dart';
+import '../controllers/Transaction_Controller.dart';
 import '../screens/send.dart';
 import '../screens/transfer.dart';
 
@@ -15,6 +16,9 @@ class DisplayCards extends StatefulWidget {
 
 class _DisplayCardsState extends State<DisplayCards> {
   final StudentController studentController = Get.find<StudentController>();
+  final TransactionController transactionController =
+      Get.find<TransactionController>();
+
   // @override
   // void initState() {
   //   super.initState();

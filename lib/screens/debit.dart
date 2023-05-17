@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'HomeScreen.dart';
 
 class DebitInvoicePage extends StatefulWidget {
+  final String id;
   final String name;
   final String acc;
   final String amount;
@@ -13,6 +14,7 @@ class DebitInvoicePage extends StatefulWidget {
 
   const DebitInvoicePage({
     Key? key,
+    required this.id,
     required this.name,
     required this.acc,
     required this.amount,
@@ -71,7 +73,7 @@ class _DebitInvoicePage extends State<DebitInvoicePage> {
                     height: 5,
                   ),
                   Text(
-                    " + Rs. 700",
+                    "Rs. ${widget.amount}",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
@@ -223,7 +225,7 @@ class _DebitInvoicePage extends State<DebitInvoicePage> {
                                 height: 20,
                               ),
                               Text(
-                                'Transaction no',
+                                'Transaction Id',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -232,7 +234,7 @@ class _DebitInvoicePage extends State<DebitInvoicePage> {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                widget.acc,
+                                widget.id,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'BebasNeue',

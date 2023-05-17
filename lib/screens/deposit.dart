@@ -60,10 +60,10 @@ class _DepositState extends State<Deposit> {
               height: 15,
             ),
             const SizedBox(height: 30),
-            const ContainerHeading(
+            ContainerHeading(
               title: 'Account Number',
               desc: 'My Acc number',
-              number: '123456',
+              number: studentController.student.value.accountNo.toString(),
             ),
             SizedBox(height: 60),
             Form(

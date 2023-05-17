@@ -8,8 +8,10 @@ import 'package:unipay/screens/HomeScreen.dart';
 import 'package:unipay/screens/InvoicePage.dart';
 
 import '../controllers/Student_Controller.dart';
+import '../controllers/Transaction_Controller.dart';
 import '../controllers/dbhelper.dart';
 import '../models/Invoice.dart';
+import '../models/transaction.dart';
 import 'home.dart';
 
 class MoneyTransferPage extends StatefulWidget {
@@ -25,6 +27,8 @@ class _MoneyTransferPageState extends State<MoneyTransferPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController idController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
+  final TransactionController transactionController =
+      Get.find<TransactionController>();
   dbhelper db = new dbhelper();
   final StudentController studentController = Get.find<StudentController>();
   String _id = '';
@@ -150,6 +154,24 @@ class _MoneyTransferPageState extends State<MoneyTransferPage> {
                         int.parse(widget.amount.substring(4)))
                     .toString();
                 studentController.student.value.setBalance(temp);
+
+                transactionController.debitTransactions.insert(
+                    0,
+                    Transaction(
+                        json.decode(res.body)['id'].toString(),
+                        json.decode(res.body)['amount'].toString(),
+                        json.decode(res.body)['senderName'],
+                        json.decode(res.body)['recieverName'],
+                        json.decode(res.body)['senderId'],
+                        json.decode(res.body)['recieverId'],
+                        json.decode(res.body)['senderAccount'],
+                        json.decode(res.body)['recieverAccount'],
+                        json.decode(res.body)['date'],
+                        json.decode(res.body)['time'],
+                        json.decode(res.body)['note'],
+                        json.decode(res.body)['type']));
+                //
+                // ));
                 obj.setreceiver(json.decode(res.body)['recieverId']);
                 obj.setamount(widget.amount.toString());
                 obj.setaccount(json.decode(res.body)['recieverAccount']);

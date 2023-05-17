@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:unipay/controllers/Transaction_Controller.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 import 'package:unipay/screens/InvoicePage.dart';
 import 'package:unipay/screens/sendmoney.dart';
@@ -11,6 +12,7 @@ import 'package:unipay/screens/transfer.dart';
 
 import '../controllers/Student_Controller.dart';
 import '../controllers/dbhelper.dart';
+import '../models/transaction.dart';
 import '../widgets/numpad.dart';
 
 class Paynum extends StatefulWidget {
@@ -28,6 +30,8 @@ class _PaynumState extends State<Paynum> {
 
   dbhelper db = new dbhelper();
   final StudentController studentController = Get.find<StudentController>();
+  final TransactionController transactionController =
+      Get.find<TransactionController>();
 
   @override
   void initState() {
@@ -139,6 +143,23 @@ class _PaynumState extends State<Paynum> {
                                     .substring(4)))
                             .toString();
                         studentController.student.value.setBalance(temp);
+
+                        transactionController.debitTransactions.insert(
+                            0,
+                            Transaction(
+                                json.decode(res.body)['id'].toString(),
+                                json.decode(res.body)['amount'].toString(),
+                                json.decode(res.body)['senderName'],
+                                json.decode(res.body)['recieverName'],
+                                json.decode(res.body)['senderId'],
+                                json.decode(res.body)['recieverId'],
+                                json.decode(res.body)['senderAccount'],
+                                json.decode(res.body)['recieverAccount'],
+                                json.decode(res.body)['date'],
+                                json.decode(res.body)['time'],
+                                json.decode(res.body)['note'],
+                                json.decode(res.body)['type']));
+
                         _showConfimrationDialog(context);
                         Navigator.pushReplacement(
                             context,
