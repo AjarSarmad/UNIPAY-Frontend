@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unipay/screens/deposit.dart';
-import 'package:unipay/screens/sendmoney.dart';
 
 import '../controllers/Student_Controller.dart';
 import '../controllers/Transaction_Controller.dart';
@@ -143,7 +142,7 @@ class _DisplayCardsState extends State<DisplayCards> {
                 },
                 child: Container(
                   height: 125,
-                  width: 152.5,
+                  width: 155,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: const Color.fromARGB(255, 255, 129, 129),

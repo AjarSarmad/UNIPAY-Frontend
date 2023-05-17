@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unipay/screens/HomeScreen.dart';
-import 'package:unipay/screens/sendmoney.dart';
+//import 'package:unipay/screens/sendmoney.dart';
 import 'package:unipay/screens/transfer.dart';
 
 import '../controllers/Student_Controller.dart';
@@ -20,7 +20,14 @@ class _SendMoneyState extends State<SendMoney> {
   final TextEditingController _myController = TextEditingController();
   dbhelper db = new dbhelper();
   final StudentController studentController = Get.find<StudentController>();
-  @override
+
+  String? validateAmount(String? value) {
+    if (value == null || value.isEmpty || value == 'Rs. ') {
+      return "Please enter an amount";
+    }
+    return null;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -52,7 +59,7 @@ class _SendMoneyState extends State<SendMoney> {
                       textAlign: TextAlign.center,
                       text: TextSpan(children: [
                         TextSpan(
-                          text: 'Current Balance',
+                          text: 'Current Balance ',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.white,
@@ -81,8 +88,8 @@ class _SendMoneyState extends State<SendMoney> {
                   key: _formKey,
                   controller: _myController,
                   validator: (value) {
-                    if (value == '' || value == 'Rs. ') {
-                      return "Please enter an amount";
+                    if (value!.isEmpty) {
+                      return 'Please enter a value';
                     }
                     return null;
                   },
@@ -126,13 +133,16 @@ class _SendMoneyState extends State<SendMoney> {
                       ),
                     ),
                     onPressed: () {
-                      //  if (_formKey.currentState!.validate()) {
+                      //if (
+                      //formKey.currentState != null &&
+                      //  _formKey.currentState!.validate()) {
                       Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MoneyTransferPage(
-                                  amount: _myController.text)));
-                      // }
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              MoneyTransferPage(amount: _myController.text),
+                        ),
+                      );
                     },
                     child: const Text(
                       'Send',

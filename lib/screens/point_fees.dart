@@ -65,7 +65,7 @@ class _Pointfees extends State<Pointfees> {
                       children: [
                         TextFormField(
                           controller: _nuidController,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             contentPadding: EdgeInsets.symmetric(

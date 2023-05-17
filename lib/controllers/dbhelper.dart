@@ -9,7 +9,7 @@ import 'Student_Controller.dart';
 import 'Transaction_Controller.dart';
 
 class dbhelper {
-  static const String url = 'http://192.168.18.11:80/api';
+  static const String url = 'http://192.168.18.67:80/api';
   static late String email;
   late String name;
   static late String balance;

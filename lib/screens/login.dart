@@ -57,7 +57,7 @@ class SignInScreen extends StatelessWidget {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
                             }
-
+                            //if(){return 'No such email exists. Kindly enter a valid email '}
                             if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                 .hasMatch(value)) {
                               return 'Please enter a valid email address';
@@ -200,4 +200,59 @@ class SignInScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+_showErrorDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      insetPadding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: SizedBox(
+        height: 430,
+        width: 327,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
+              SizedBox(
+                width: 180,
+                height: 180,
+                child: FittedBox(
+                  child: Icon(Icons.error),
+                  fit: BoxFit.fill,
+                ),
+              ),
+              const SizedBox(height: 35),
+              Text(
+                "No such email exists. Kindly enter a valid email",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 10,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40),
+              TextButton(
+                onPressed: () => Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => SignInScreen())),
+                style: TextButton.styleFrom(
+                    minimumSize: const Size(200, 50),
+                    primary: Colors.white,
+                    backgroundColor: Color(0xFFD44C66),
+                    shape: const BeveledRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(7)))),
+                child: Text("Ok, Thanks"),
+              )
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }

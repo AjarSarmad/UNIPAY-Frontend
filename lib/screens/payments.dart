@@ -56,7 +56,10 @@ class Payments extends StatelessWidget {
         children: [
           Icon(icon, size: 48),
           SizedBox(height: 16),
-          Text(label),
+          Text(
+            label,
+            style: TextStyle(fontSize: 12),
+          ),
         ],
       ),
       onPressed: () => Navigator.pushReplacement(

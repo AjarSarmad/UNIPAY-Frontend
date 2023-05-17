@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 import 'package:unipay/screens/InvoicePage.dart';
+import 'package:unipay/screens/send.dart';
 
 import '../controllers/Student_Controller.dart';
 import '../controllers/Transaction_Controller.dart';
@@ -41,7 +42,7 @@ class _MoneyTransferPageState extends State<MoneyTransferPage> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () => Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomeScreen())),
+                context, MaterialPageRoute(builder: (context) => SendMoney())),
           ),
           title: Text("Send Money"),
           centerTitle: true,
@@ -332,7 +333,7 @@ _ErrorConfimrationDialog(BuildContext context) {
               const SizedBox(height: 40),
               TextButton(
                 onPressed: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen())),
+                    MaterialPageRoute(builder: (context) => SendMoney())),
                 style: TextButton.styleFrom(
                     minimumSize: const Size(200, 50),
                     primary: Colors.white,

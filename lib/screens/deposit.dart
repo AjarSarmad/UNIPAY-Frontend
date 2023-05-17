@@ -68,23 +68,28 @@ class _DepositState extends State<Deposit> {
             SizedBox(height: 60),
             Form(
               key: _formKey,
-              child: TextFormField(
-                controller: _amountController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter amount';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 38, vertical: 20),
-                  labelText: "Deposit Amount",
-                  hintText: "Enter amount",
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(28),
-                    gapPadding: 10,
+              child: Center(
+                child: Container(
+                  width: 350,
+                  child: TextFormField(
+                    controller: _amountController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter amount';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 38, vertical: 20),
+                      labelText: "Deposit Amount",
+                      hintText: "Enter amount",
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(28),
+                        gapPadding: 10,
+                      ),
+                    ),
                   ),
                 ),
               ),

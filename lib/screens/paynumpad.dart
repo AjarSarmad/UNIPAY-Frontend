@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:unipay/controllers/Transaction_Controller.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 import 'package:unipay/screens/InvoicePage.dart';
-import 'package:unipay/screens/sendmoney.dart';
+import 'package:unipay/screens/payments.dart';
 import 'package:unipay/screens/transfer.dart';
 
 import '../controllers/Student_Controller.dart';
@@ -56,7 +56,7 @@ class _PaynumState extends State<Paynum> {
                     onPressed: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HomeScreen(),
+                        builder: (context) => Payments(),
                       ),
                     ),
                   ),
@@ -302,7 +302,7 @@ _ErrorConfimrationDialog(BuildContext context) {
               const SizedBox(height: 40),
               TextButton(
                 onPressed: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen())),
+                    MaterialPageRoute(builder: (context) => Payments())),
                 style: TextButton.styleFrom(
                     minimumSize: const Size(200, 50),
                     primary: Colors.white,
@@ -310,6 +310,66 @@ _ErrorConfimrationDialog(BuildContext context) {
                     shape: const BeveledRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(7)))),
                 child: Text("Try Again"),
+              )
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+_InsuffBalance(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      insetPadding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: SizedBox(
+        height: 430,
+        width: 327,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
+              SizedBox(
+                width: 200,
+                height: 180,
+                child: FittedBox(
+                  child: Icon(
+                    Icons.error,
+                  ),
+
+                  //Image.asset('assets/red.png'),
+                  //SvgPicture.asset('assets/images/sent_illustration.svg'),
+                  fit: BoxFit.fill,
+                ),
+              ),
+              const SizedBox(height: 35),
+              Text(
+                "You have insufficient balance in your account!",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40),
+              TextButton(
+                onPressed: () => Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => Payments())),
+                style: TextButton.styleFrom(
+                    minimumSize: const Size(200, 50),
+                    primary: Colors.white,
+                    backgroundColor: Color(0xFFD44C66),
+                    shape: const BeveledRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(7)))),
+                child: Text("Go back"),
               )
             ],
           ),

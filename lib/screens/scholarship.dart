@@ -6,6 +6,19 @@ import 'package:unipay/screens/application.dart';
 
 import 'HomeScreen.dart';
 
+class ScholarshipID extends StatelessWidget {
+  final String id;
+
+  ScholarshipID(this.id);
+
+  @override
+  Widget build(BuildContext context) {
+    throw UnimplementedError();
+  }
+}
+
+List<String> ids = ["1", "2", "3", "4", "5"];
+
 class Scholarship extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -41,7 +54,9 @@ class Scholarship extends StatelessWidget {
             Scard(
               title: t1,
               desc: d1,
-              nav: Application(),
+              nav: Application(
+                id: ids[0],
+              ),
             ),
             SizedBox(
               height: 10,
@@ -49,20 +64,22 @@ class Scholarship extends StatelessWidget {
             Scard(
               title: t2,
               desc: d2,
-              nav: Application(),
+              nav: Application(
+                id: ids[1],
+              ),
             ),
             SizedBox(
               height: 10,
             ),
-            Scard(title: t3, desc: d3, nav: Application()),
+            Scard(title: t3, desc: d3, nav: Application(id: ids[2])),
             SizedBox(
               height: 10,
             ),
-            Scard(title: t4, desc: d4, nav: Application()),
+            Scard(title: t4, desc: d4, nav: Application(id: ids[3])),
             SizedBox(
               height: 10,
             ),
-            Scard(title: t5, desc: d5, nav: Application())
+            Scard(title: t5, desc: d5, nav: Application(id: ids[4]))
           ],
         )));
   }

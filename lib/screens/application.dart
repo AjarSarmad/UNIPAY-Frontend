@@ -1,30 +1,36 @@
-import 'package:http/http.dart' as http;
-import 'dart:ui';
+//import 'dart:html';
+//import 'dart:ui';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 
-import 'package:path_provider/path_provider.dart';
+import 'package:unipay/screens/scholarship.dart';
 
-import 'home.dart';
+class Application extends StatefulWidget {
+  final String id;
+  Application({Key? key, required this.id}) : super(key: key);
 
-class Application extends StatelessWidget {
-  Application({Key? key}) : super(key: key);
+  State<Application> createState() => _Application();
+}
+
+class _Application extends State<Application> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   final idcontroller = TextEditingController();
   final gcontroller = TextEditingController();
   final gncontroller = TextEditingController();
-
+  final deptController = TextEditingController();
+  final cgpaController = TextEditingController();
+  final semController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomeScreen())),
+            onPressed: () => Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => Scholarship())),
           ),
           title: Text("Scholarship Application"),
           centerTitle: true,
@@ -72,6 +78,72 @@ class Application extends StatelessWidget {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          TextFormField(
+                              validator: ((value) {
+                                if (value!.isEmpty) {
+                                  return "Please enter your dept";
+                                }
+                                return null;
+                              }),
+                              decoration: InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 42, vertical: 20),
+                                labelText: "Department",
+                                hintText: "Enter Department Name",
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(28),
+                                  gapPadding: 10,
+                                ),
+                              )),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          TextFormField(
+                              validator: ((value) {
+                                if (value!.isEmpty) {
+                                  return "Please enter your semester";
+                                }
+                                return null;
+                              }),
+                              decoration: InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 42, vertical: 20),
+                                labelText: "Semester",
+                                hintText: "Enter Semester",
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(28),
+                                  gapPadding: 10,
+                                ),
+                              )),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          TextFormField(
+                              validator: ((value) {
+                                if (value!.isEmpty) {
+                                  return "Please enter your CGPA";
+                                }
+                                return null;
+                              }),
+                              decoration: InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 42, vertical: 20),
+                                labelText: "CGPA",
+                                hintText: "Enter CGPA",
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(28),
+                                  gapPadding: 10,
+                                ),
+                              )),
                           SizedBox(
                             height: 30,
                           ),
