@@ -3,25 +3,40 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:unipay/controllers/ScholarshipController.dart';
 import 'package:unipay/models/student.dart';
 
 import 'Student_Controller.dart';
 import 'Transaction_Controller.dart';
 
 class dbhelper {
-  static const String url = 'http://192.168.18.67:80/api';
+  static const String url = 'http://192.168.18.11:80/api';
   static late String email;
   late String name;
   static late String balance;
   final StudentController studentController = Get.put(StudentController());
+  final StudentController studentController2 = Get.find<StudentController>();
+
   final TransactionController transactionController =
       Get.put(TransactionController());
+  final ScholarshipController scholarshipController =
+      Get.put(ScholarshipController());
 
   Future<http.Response> getStudentbyId(String id) async {
     var response =
-        await http.get(Uri.parse(url + '/Student/getstudentbyId?id=' + id));
+        await http.get(Uri.parse('$url/Student/getstudentbyId?id=$id'));
     print("${response.statusCode}");
     return response;
+  }
+
+  void getScholarships() {
+    Future s = scholarshipController.getAllScholarships();
+    s.then((value) => {
+          if (value.statusCode == 200)
+            {
+              print("Scholarships Fetched"),
+            }
+        });
   }
 
   Future<http.Response> AccountVerification(
@@ -47,36 +62,8 @@ class dbhelper {
 
       var res2 = await transactionController.getDebitTransactions(
           json.decode(response.body)['loginId'].toString());
-      //email = emailController;
-      //Future s =
-      //getStudentbyId(json.decode(response.body)['loginId'].toString());
+      getScholarships();
 
-      // s.then((value) => {
-      //       if (value.statusCode == 200)
-      //         {
-      // student.setAccountNo(json.decode(value.body)['accountNo']),
-      // student.setBalance(json.decode(value.body)['balance']),
-      // student.setContact(json.decode(value.body)['contact']),
-      // student.setEmail(json.decode(value.body)['email']),
-      // student.setFirstName(json.decode(value.body)['firstName']),
-      // student.setLastName(json.decode(value.body)['lastName']),
-      // student.setGuardianContact(
-      //     json.decode(value.body)['guardianContact']),
-      // student.setGuardianFullName(
-      //     json.decode(value.body)['guardianFullName']),
-      // student.setAddress(json.decode(value.body)['address']),
-      // student.setNu_id(json.decode(value.body)['nu_id']),
-      // studentController.setStudent(student),
-      // Get.lazyPut<StudentController>(() => StudentController())
-
-      // name = json.decode(value.body)['firstName'] +
-      //     " " +
-      //     json.decode(value.body)['lastName'],
-      // balance = json.decode(value.body)['balance']
-      // }
-      // }
-      // )
-      ;
       return response;
     }
     print("${response.statusCode}");
@@ -87,6 +74,52 @@ class dbhelper {
     var response = await http.post(
       Uri.parse("${url}/Transactions/depositMoney?id=$id&amount=$amount"),
     );
+    print("${response.statusCode}");
+    return response;
+  }
+
+  Future<http.Response> postLoan(String id, String amount, String reason) {
+    Map data = {
+      'studentId': '$id',
+      'amount': '$amount',
+      'desc': '$reason',
+    };
+    //encode Map to JSON
+    var body = json.encode(data);
+    var response = http.post(
+      Uri.parse("${url}/Loan/postLoan"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: body,
+    );
+    return response;
+  }
+
+  Future<http.Response> postScholarshipRegistration(String cgpa,
+      String semester, String department, String scholarshipId) async {
+    Map data = {
+      'studentId': '${studentController2.student.value.nu_id.toString()}',
+      'cgpa': '$cgpa',
+      'semester': '$semester',
+      'department': '$department',
+      'guardian':
+          '${studentController2.student.value.guardianFullName.toString()}',
+      'guardian_contact':
+          '${studentController2.student.value.guardianContact.toString()}',
+      'document': 'none',
+      'scholarshipId': '$scholarshipId',
+    };
+    //encode Map to JSON
+    var body = json.encode(data);
+    var response = await http.post(
+      Uri.parse("${url}/Scholarship/postScholarshipRegistration"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: body,
+    );
+    print(body);
     print("${response.statusCode}");
     return response;
   }
@@ -211,7 +244,7 @@ class dbhelper {
       'guardianFullName': '${obj.guardianFullName}',
       'guardianContact': '${obj.guardianContact}',
       'address': '${obj.address}',
-      'accountNo': '${obj.accountNo}',
+      // 'accountNo': '${obj.accountNo}',
       'balance': '${obj.balance}',
     };
     //encode Map to JSON

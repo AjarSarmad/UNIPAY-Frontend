@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class TransactionController extends GetxController {
-  static const String url = 'http://192.168.18.67:80/api';
+  static const String url = 'http://192.168.18.11:80/api';
   late RxList<Transaction> debitTransactions;
   late RxList<Transaction> creditTransactions;
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unipay/controllers/dbhelper.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 
 class Loan extends StatelessWidget {
@@ -6,9 +7,12 @@ class Loan extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController idController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
+  final TextEditingController reasonController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    dbhelper db = new dbhelper();
+
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(
@@ -39,6 +43,7 @@ class Loan extends StatelessWidget {
                         key: _formKey,
                         child: Column(children: [
                           TextFormField(
+                            controller: idController,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter NU ID';
@@ -66,6 +71,7 @@ class Loan extends StatelessWidget {
                             height: 30,
                           ),
                           TextFormField(
+                            controller: amountController,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter amount';
@@ -89,6 +95,7 @@ class Loan extends StatelessWidget {
                             height: 30,
                           ),
                           TextFormField(
+                              controller: reasonController,
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "Please enter a reason";
@@ -130,9 +137,14 @@ class Loan extends StatelessWidget {
         ),
         child: Center(
           child: InkWell(
-            onTap: () {
+            onTap: () async {
               if (_formKey.currentState!.validate()) {
-                _showConfimrationDialog(context);
+                var res = await db.postLoan(
+                  idController.text,
+                  amountController.text,
+                  reasonController.text,
+                );
+                if (res.statusCode == 201) _showConfimrationDialog(context);
               }
             },
             child: Container(

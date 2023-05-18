@@ -4,9 +4,14 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:unipay/controllers/Student_Controller.dart';
+import 'package:unipay/controllers/dbhelper.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 
 import 'package:unipay/screens/scholarship.dart';
+
+import '../controllers/ScholarshipController.dart';
 
 class Application extends StatefulWidget {
   final String id;
@@ -23,6 +28,11 @@ class _Application extends State<Application> {
   final deptController = TextEditingController();
   final cgpaController = TextEditingController();
   final semController = TextEditingController();
+
+  dbhelper db = new dbhelper();
+  final StudentController studentController = Get.find<StudentController>();
+  final ScholarshipController scholarshipController =
+      Get.find<ScholarshipController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +65,7 @@ class _Application extends State<Application> {
                         key: _formkey,
                         child: Column(children: [
                           TextFormField(
+                            controller: idcontroller,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter your NU ID';
@@ -82,6 +93,7 @@ class _Application extends State<Application> {
                             height: 30,
                           ),
                           TextFormField(
+                              controller: deptController,
                               validator: ((value) {
                                 if (value!.isEmpty) {
                                   return "Please enter your dept";
@@ -104,6 +116,7 @@ class _Application extends State<Application> {
                             height: 30,
                           ),
                           TextFormField(
+                              controller: semController,
                               validator: ((value) {
                                 if (value!.isEmpty) {
                                   return "Please enter your semester";
@@ -126,6 +139,7 @@ class _Application extends State<Application> {
                             height: 30,
                           ),
                           TextFormField(
+                              controller: cgpaController,
                               validator: ((value) {
                                 if (value!.isEmpty) {
                                   return "Please enter your CGPA";
@@ -148,6 +162,7 @@ class _Application extends State<Application> {
                             height: 30,
                           ),
                           TextFormField(
+                              controller: gcontroller,
                               validator: ((value) {
                                 if (value!.isEmpty) {
                                   return "Please enter your guardian's name";
@@ -170,6 +185,7 @@ class _Application extends State<Application> {
                             height: 30,
                           ),
                           TextFormField(
+                              controller: gncontroller,
                               validator: ((value) {
                                 if (value!.isEmpty) {
                                   return "Please enter your guardian's contact number";
@@ -192,7 +208,7 @@ class _Application extends State<Application> {
                             height: 30,
                           ),
                           Text(
-                            "Attach required documents:",
+                            "Attach ANY Utility bill:",
                             textAlign: TextAlign.end,
                           ),
                           SizedBox(
@@ -239,9 +255,15 @@ class _Application extends State<Application> {
         ),
         child: Center(
           child: InkWell(
-            onTap: () {
+            onTap: () async {
               if (_formkey.currentState!.validate()) {
-                _showConfimrationDialog(context);
+                var res = await db.postScholarshipRegistration(
+                  cgpaController.text.toString(),
+                  semController.text.toString(),
+                  deptController.text.toString(),
+                  widget.id.toString(),
+                );
+                if (res.statusCode == 201) _showConfimrationDialog(context);
               }
             },
             child: Container(

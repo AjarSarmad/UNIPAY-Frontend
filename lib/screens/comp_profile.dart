@@ -273,29 +273,29 @@ class CompleteProfileScreen extends StatelessWidget {
                     ],
                   )),
                   SizedBox(height: 30),
-                  Form(
-                      child: Column(
-                    children: [
-                      TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your jazz cash acc number';
-                          }
-                          return null;
-                        },
-                        controller: accountNo,
-                        decoration: InputDecoration(
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 42, vertical: 20),
-                            labelText: "JazzCash Acc Number",
-                            hintText: "Enter your JazzCash Acc Number",
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                gapPadding: 10)),
-                      )
-                    ],
-                  )),
+                  // Form(
+                  //     child: Column(
+                  //   children: [
+                  //     TextFormField(
+                  //       validator: (value) {
+                  //         if (value!.isEmpty) {
+                  //           return 'Please enter your jazz cash acc number';
+                  //         }
+                  //         return null;
+                  //       },
+                  //       controller: accountNo,
+                  //       decoration: InputDecoration(
+                  //           floatingLabelBehavior: FloatingLabelBehavior.always,
+                  //           contentPadding: EdgeInsets.symmetric(
+                  //               horizontal: 42, vertical: 20),
+                  //           labelText: "JazzCash Acc Number",
+                  //           hintText: "Enter your JazzCash Acc Number",
+                  //           enabledBorder: OutlineInputBorder(
+                  //               borderRadius: BorderRadius.circular(28),
+                  //               gapPadding: 10)),
+                  //     )
+                  //   ],
+                  // )),
                   SizedBox(height: 30),
                   TextButton(
                     onPressed: () {
@@ -309,7 +309,7 @@ class CompleteProfileScreen extends StatelessWidget {
                       student.setGuardianFullName(guardianFullName.text.trim());
                       student.setGuardianContact(guardianContact.text.trim());
                       student.setAddress(address.text.trim());
-                      student.setAccountNo(accountNo.text.trim());
+                      // student.setAccountNo(accountNo.text.trim());
 
                       Future s = db.postStudent(student);
                       s.then((value) => {

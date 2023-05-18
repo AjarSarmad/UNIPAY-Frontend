@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:unipay/controllers/Student_Controller.dart';
+import 'package:unipay/models/student.dart';
 import 'package:unipay/screens/HomeScreen.dart';
 import 'package:unipay/screens/home.dart';
 import 'package:unipay/screens/login.dart';
@@ -18,6 +21,7 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final StudentController studentController = Get.put(StudentController());
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -45,7 +49,8 @@ class OtpScreen extends StatelessWidget {
                   Text(
                     "OTP Verification",
                   ),
-                  Text("We sent your code to 000 000 ***"),
+                  Text(
+                      "We sent your code to ${studentController.student.value.contact.toString()}"),
                   //Timer(),
                   Form(
                     child: Column(

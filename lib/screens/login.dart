@@ -1,6 +1,7 @@
 import 'package:unipay/controllers/dbhelper.dart';
 import 'package:flutter/material.dart';
 import 'package:unipay/screens/Admin/admin_login.dart';
+import 'package:unipay/screens/comp_profile.dart';
 import 'package:unipay/screens/signup.dart';
 import 'forget_password.dart';
 import 'otp.dart';
@@ -165,7 +166,7 @@ class SignInScreen extends StatelessWidget {
                       onTap: () => Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SignUpScreen())),
+                              builder: (context) => CompleteProfileScreen())),
                       child: Text(
                         "Sign Up",
                         style:
